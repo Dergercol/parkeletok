@@ -25,17 +25,39 @@ public class Database
         if(!user_exists($username)) {
             // Encrypting the password
             $phash = sha1(sha1($password."brent")."brent");
-            $sql = "insert into users (id, username, password) values ('', '$username', '$phash');";
+            $sql = sprintf("insert into users (id, username, password) values ('', '%s', '%s', );",
+                            mysqli_real_escape_string($username), 
+                            mysqli_real_escape_string($phash));
+
             $result = mysqli_query($this->$conn, $sql);
         }
     }
 
-    private function user_exists($username) {
-        $sql = "select * from users where username='$user';";
+    /**
+     *  Matches provided credentials with the ones in the database
+     *  
+     *  @param string $username User provided username
+     *  @param string $password User provided password
+     */
+    public function checklogin($username, $password) {
+        $sql = sprintf("select * from users where username='%s' and password='%s';", 
+                        mysqli_real_escape_string($username),
+                        mysqli_real_escape_string($password));
+
         $result = mysqli_query($conn, $sql);
         $count = mysqli_num_rows($result);
 
-        return (count > 0) ? true : false;
+        return (count > 0);
+    }
+
+    public function user_exists($username) {
+        $sql = sprintf("select * from users where username='%s';", 
+                        mysqli_real_escape_string($user));
+
+        $result = mysqli_query($conn, $sql);
+        $count = mysqli_num_rows($result);
+
+        return (count > 0);
     }
 }
 
