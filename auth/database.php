@@ -16,7 +16,7 @@ public class Database
 
     /**
      *  Adds a new user record into the database
-     *      if user does not exist already
+     *      if it doesn't exist already
      *
      *  @param string $username User preferred username
      *  @param string $password User password  
@@ -47,7 +47,7 @@ public class Database
         $result = mysqli_query($conn, $sql);
         $count = mysqli_num_rows($result);
 
-        return (count > 0);
+        return ($count > 0);
     }
 
     public function user_exists($username) {
@@ -57,7 +57,7 @@ public class Database
         $result = mysqli_query($conn, $sql);
         $count = mysqli_num_rows($result);
 
-        return (count > 0);
+        return ($count > 0);
     }
 }
 
